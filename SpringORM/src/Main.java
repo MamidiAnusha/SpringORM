@@ -10,10 +10,11 @@ public class Main {
 
    ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
    IAccountDao adao = (IAccountDao)context.getBean("accDao");
-   Account account = (Account)adao.getAccountDetailsById(101);
-  // account.setAccId(104);
-  // account.setAccName("qrst");
- //  account.setAccBal(5412.01);
+   Account account = new Account();
+   adao.createAccount(account);
+   account.setAccId(105);
+   account.setAccName("vfgdrg");
+   account.setAccBal(14527.2);
    
    System.out.println(account);
    
