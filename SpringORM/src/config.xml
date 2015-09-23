@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                        http://www.springframework.org/schema/util
+                        http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+	<context:annotation-config />
+	<context:property-placeholder location="jdbcdetails.properties" />
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		name="dataSourceObj">
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${uname}" />
+		<property name="password" value="${pwd}" />
+	</bean>
+	<bean
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		name="sessionObj">
+		<property name="dataSource" ref="dataSourceObj" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.account.model.Account</value>
+			</list>
+		</property>
+	</bean>
+	<bean class="org.springframework.orm.hibernate3.HibernateTemplate"
+		name="templateObj">
+		<property name="sessionFactory" ref="sessionObj" />
+	</bean>
+	<bean class="com.account.dao.impl.AccountDaoImpl" name="accDao">
+		<property name="template" ref="templateObj" />
+	</bean>
+
+
+</beans>
